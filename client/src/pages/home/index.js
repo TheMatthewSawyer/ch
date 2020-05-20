@@ -1,4 +1,4 @@
-import React from 'reactn';
+import React from 'react';
 import placeholder1 from "../../images/placeholder 1.jpg"
 import placeholder2 from "../../images/placeholder 2.jpg"
 import placeholder3 from "../../images/placeholder 3.jpg"

@@ -9,17 +9,16 @@ function Login() {
         e.preventDefault();
         const userEmail = document.getElementById('userEmail');
         const userPassword = document.getElementById('userPassword');
-        const signInError = document.getElementById('signInError');
+        // const signInError = document.getElementById('signInError');
         userEmail.style.border = "1px solid #ced4da";
         userPassword.style.border = "1px solid #ced4da";
         if(isEmpty(userEmail.value)) { userEmail.style.border = "2px solid red";return;}
         if(isEmpty(userPassword.value)) { userPassword.style.border = "2px solid red";return;}
-        var data = {
-            email: userEmail.value,
-            password: userPassword.value
-        }
         axios
-            .get(`/api/login/${userEmail.value}/${userPassword.value}`)
+            .post('nameless-badlands-59911.herokuapp.com/api/login/',{
+                email: userEmail.value,
+                password: userPassword.value
+            })
             .then(function (res) {
                 console.log(res);
                 if(res.data.email) {

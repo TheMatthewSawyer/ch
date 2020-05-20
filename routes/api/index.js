@@ -40,11 +40,11 @@ router.route("/login/:email/:password")
             }
             res.json(response);
         } else {
-            res.send(false);
+            res.json(false);
         }
     })
     .catch( function() {
-        res.send(false);
+        res.json(false);
     });
 });
 
