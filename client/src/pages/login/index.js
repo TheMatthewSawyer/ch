@@ -21,6 +21,7 @@ function Login() {
         axios
             .get(`/api/login/${userEmail.value}/${userPassword.value}`)
             .then(function (res) {
+                console.log(res);
                 if(res.data.email) {
                     if(res.data.recruiter === true) {
                         console.log('recruiter good')

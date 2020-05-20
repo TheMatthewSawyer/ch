@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const routes = require("./routes");
 const session = require("express-session");
 const bodyParser = require('body-parser');
-// mongo ds229722.mlab.com:29722/heroku_bbwcnjd8 -u heroku_bbwcnjd8 -p 273qhmfvqq2jhakc5
-// lc4s0b5me pass
+
 app.use(express.static("public"));
 app.use(session({
   secret: "cats",
@@ -21,6 +20,8 @@ mongoose.connect(
       useUnifiedTopology: true
     }
 );
+mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
+mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); });
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -31,7 +32,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(routes);
-// routes.initialize(app);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT);
