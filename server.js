@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // const routes = require("./routes");
 // const session = require("express-session");
 const bodyParser = require('body-parser');
-// const path = require('path');
+const path = require('path');
 const db = require("./models");
 
 // app.use(express.static("client/build"));
