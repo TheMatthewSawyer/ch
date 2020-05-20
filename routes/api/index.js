@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const db = require("../../models");
-let passport = require("../../config/Passport");
 
 /*          /api/[______]              */
 

@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 const routes = require("./routes");
 const session = require("express-session");
 const bodyParser = require('body-parser');
-const passport = require('./config/passport');
-
 
 app.use(express.static("public"));
 app.use(session({
@@ -14,8 +12,6 @@ app.use(session({
   saveUninitialized: true,
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 mongoose.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/choober",
