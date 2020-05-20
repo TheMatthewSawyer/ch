@@ -15,7 +15,7 @@ function Login() {
         if(isEmpty(userEmail.value)) { userEmail.style.border = "2px solid red";return;}
         if(isEmpty(userPassword.value)) { userPassword.style.border = "2px solid red";return;}
         axios
-            .post('nameless-badlands-59911.herokuapp.com/api/login/',{
+            .post('/api/login/',{
                 email: userEmail.value,
                 password: userPassword.value
             })
