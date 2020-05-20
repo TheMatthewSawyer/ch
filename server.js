@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const routes = require("./routes");
 const session = require("express-session");
 const bodyParser = require('body-parser');
-
+// mongo ds229722.mlab.com:29722/heroku_bbwcnjd8 -u heroku_bbwcnjd8 -p 273qhmfvqq2jhakc5
+// lc4s0b5me pass
 app.use(express.static("public"));
 app.use(session({
   secret: "cats",
@@ -14,7 +15,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 
 mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/choober",
+  "mongodb://heroku_bbwcnjd8:273qhmfvqq2jhakc5lc4s0b5me@ds229722.mlab.com:29722/heroku_bbwcnjd8",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true

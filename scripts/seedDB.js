@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 
-mongoose.connect(
-    "mongodb://localhost/choober" || process.env.MONGODB_URI
+mongoose.connect(// "mongodb://localhost/choober"
+    "mongodb://heroku_bbwcnjd8:273qhmfvqq2jhakc5lc4s0b5me@ds229722.mlab.com:29722/heroku_bbwcnjd8"
 );
 
 const userSeed = [

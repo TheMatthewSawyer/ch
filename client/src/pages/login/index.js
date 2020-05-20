@@ -22,7 +22,7 @@ function Login() {
             .get(`/api/login/${userEmail.value}/${userPassword.value}`)
             .then(function (res) {
                 if(res.data.email) {
-                    if(res.data.recruiter) {
+                    if(res.data.recruiter === true) {
                         console.log('recruiter good')
                     } else {
                         console.log('candidate good')
