@@ -1,7 +1,6 @@
-import React, { useGlobal, useEffect } from 'reactn';
+import React from 'react'
 
 function Navbar(props) {
-    const page = props.active;
     const setPage = props.setPage;
 
     const homeClickHandler = () => {
@@ -13,23 +12,10 @@ function Navbar(props) {
     }
 
     function roleClickHandler() {
-
+        setPage('Roles');
     }
     
     let home = "white", cand = "white", role = "white";
-    // switch(props.active) {
-    //     case "Home":
-    //         home = "white";
-    //         break;
-    //     case "Candidate Portal":
-    //         cand = "white";
-    //         break;
-    //     case "Role Descriptions":
-    //         role = "white";
-    //         break;
-    // default:
-    //     home = "white";
-    // }
 
     return(
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">

@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Entry(props) {
-    console.log(props.req);
     return(
         <div className="form-group">
             <label>
