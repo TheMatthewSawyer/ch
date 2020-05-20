@@ -27,7 +27,16 @@ mongoose.connect(
 mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
 mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); });
 
-// app.use(routes);
+/*    
+
+ooo.     .oPYo.      .oPYo.                  o              
+8  `8.   8   `8      8   `8                  8              
+8   `8  o8YooP'     o8YooP'  .oPYo.  o    o o8P .oPYo.  .oPYo. 
+8    8   8   `b      8   `b  8    8  8    8  8  8oooo8  Yb..   
+8   .P   8    8      8    8  8    8  8    8  8  8.        'Yb. 
+8ooo'    8oooP'      8    8  `YooP'  `YooP'  8  `Yooo'  `YooP' 
+
+*/
 
 app.get('/api/allUsers', function(req, res) {
   db.User
@@ -50,6 +59,13 @@ app.get('/api/allInterviews', function(req, res) {
   .catch(err => res.status(422).json(err));
 });
 
+app.post('/api/profile', function(req, res) {
+  db.UserProfile
+  .findOne({ email: `${req.body.email}`})
+  .then(dbModel => res.json(dbModel))
+  .catch(err => res.status(422).json(err));
+});
+
 
 app.post('/api/login/', function (req, res) {
   db.User
@@ -58,7 +74,7 @@ app.post('/api/login/', function (req, res) {
       if(dbModel.password === req.body.password) {
           let response = {
               email: `${dbModel.email}`,
-              recruiter: `${dbModel.recruiter}`
+              recruiter: dbModel.recruiter
           }
           res.json(response);
       } else {
@@ -66,10 +82,6 @@ app.post('/api/login/', function (req, res) {
       }
   });
 });
-  // .catch( function() {
-  //     res.json(false);
-  // });
-// });
 
 if (process.env.NODE_ENV === "production") {
 
@@ -80,18 +92,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-
-
 const PORT = process.env.PORT || 3001;
 app.listen(PORT);
-
-
-// handleSubmit = async event => {
-//   event.preventDefault();
-
-//   // Promise is resolved and value is inside of the response const.
-//   const response = await API.delete(`users/${this.state.id}`);
-
-//   console.log(response);
-//   console.log(response.data);
-// };

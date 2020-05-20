@@ -32,22 +32,27 @@ const userSeed = [
         recruiter: false
     },
     {
-        email: "John@company.com",
+        email: "testapplicant6@test.com",
+        password: "password",
+        recruiter: false
+    },
+    {
+        email: "john@company.com",
         password: "password",
         recruiter: true
     },
     {
-        email: "Abe@company.com",
+        email: "abe@company.com",
         password: "password",
         recruiter: true
     },
     {
-        email: "Betty@company.com",
+        email: "betty@company.com",
         password: "password",
         recruiter: true
     },
     {
-        email: "Niccage@test.com",
+        email: "niccage@test.com",
         password: "password",
         recruiter: true
     },

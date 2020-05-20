@@ -4,10 +4,12 @@ import './App.css';
 import Home from './pages/home';
 import Login from './pages/login';
 import Roles from './pages/roles';
-
+import Recruiter from './pages/recruiter';
+import Candidate from './pages/candidate';
+import CreateProfile from './pages/createProfile';
 
 function App() {
-
+  //MATTHEW'S ROUTER :P
   const [page, setPage] = useState('Home');
 
   switch(page) {
@@ -22,7 +24,7 @@ function App() {
         return (
           <div className="App">
             <Navbar active={page} setPage={setPage}/>
-            <Login />
+            <Login setPage={setPage}/>
           </div>
         );
         case "Roles":
@@ -32,6 +34,27 @@ function App() {
               <Roles />
             </div>
           );
+          case "Candidate":
+          return (
+            <div className="App">
+              <Navbar active={page} setPage={setPage}/>
+              <Candidate setPage={setPage} />
+            </div>
+          );
+          case "Recruiter":
+            return (
+              <div className="App">
+                <Navbar active={page} setPage={setPage}/>
+                <Recruiter />
+              </div>
+            );
+            case "CreateProfile":
+              return (
+                <div className="App">
+                  <Navbar active={page} setPage={setPage}/>
+                  <CreateProfile setPage={setPage}/>
+                </div>
+              );
     default:
       return (
         <div className="App">

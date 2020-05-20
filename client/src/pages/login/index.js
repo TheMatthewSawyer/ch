@@ -3,31 +3,38 @@ import Card from '../../components/Card';
 import Entry from '../../components/Entry'
 const axios = require('axios');
 
-function Login() {
+function Login(props) {
+    const setPage = props.setPage;
 
     const logInHandler = (e) => {
         e.preventDefault();
         const userEmail = document.getElementById('userEmail');
         const userPassword = document.getElementById('userPassword');
-        // const signInError = document.getElementById('signInError');
+        const signInError = document.getElementById('signInError');
         userEmail.style.border = "1px solid #ced4da";
         userPassword.style.border = "1px solid #ced4da";
         if(isEmpty(userEmail.value)) { userEmail.style.border = "2px solid red";return;}
         if(isEmpty(userPassword.value)) { userPassword.style.border = "2px solid red";return;}
         axios
             .post('/api/login/',{
-                email: userEmail.value,
+                email: userEmail.value.toLowerCase(),
                 password: userPassword.value
             })
             .then(function (res) {
                 console.log(res);
                 if(res.data.email) {
                     if(res.data.recruiter === true) {
-                        console.log('recruiter good')
+                        console.log('recruiter good');
+                        localStorage.setItem(`${window.btoa('email')}`, `${window.btoa( userEmail.value )}`);
+                        setPage('Recruiter');
                     } else {
-                        console.log('candidate good')
+                        console.log('candidate good');
+                        let email = `${window.btoa('email')}`
+                        localStorage.setItem(`${email}`, `${window.btoa( userEmail.value )}`);
+                        setPage('Candidate');
                     }
                 } else {
+                    signInError.value = 'Incorrect email or password'
                     console.log('bad');
                 }
             })
@@ -43,7 +50,7 @@ function Login() {
         <div className="jumbotron container" style={{marginTop: '25px'}}>
 
             <h1 className="display-4 text-center" style={{ marginBottom: "32px" }}>Welcome to the Choober Candidate Portal!</h1>
-            <Card title="Have an account?" sub="Please enter your login information below. Both your username and password are case sensitive"
+            <Card title="Have an account?" sub="Please enter your login information below. Your password is case sensitive!"
                 errorName="signInError"
                 entry={[
                     <Entry key='emailLoginEntry' req="none" type="email" name="userEmail" disp="Email Address" />,
