@@ -52,10 +52,38 @@ app.get('/api/allProfiles', function(req, res) {
   .catch(err => res.status(422).json(err));
 });
 
+app.get('/api/allRecruiters', function(req, res) {
+  db.User
+    .find({ recruiter: true })
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+})
+
+app.get('/api/allApplicants', function(req, res) {
+  db.User
+    .find({ recruiter: false })
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+})
+
 app.get('/api/allInterviews', function(req, res) {
   db.Interviews
   .find(req.query)
   .then(dbModel => res.json(dbModel))
+  .catch(err => res.status(422).json(err));
+});
+
+app.post('/api/checkForApplicantInterview', function(req, res) {
+  db.Interviews
+  .find({ applicantEmail: `${req.body.email}` })
+  .then(dbModel => res.send(dbModel))
+  .catch(err => res.status(422).json(err));
+});
+
+app.post('/api/allInterviewsOfOne', function(req, res) {
+  db.Interviews
+  .find({ recruiterEmail: `${req.body.email}` })
+  .then(dbModel => res.send(dbModel))
   .catch(err => res.status(422).json(err));
 });
 
@@ -65,7 +93,95 @@ app.post('/api/profile', function(req, res) {
   .then(dbModel => res.json(dbModel))
   .catch(err => res.status(422).json(err));
 });
+/*
+            firstName: firstName.value,
+            lastName: lastName.value,
+            profilePic: profilePic.value,
+            website: website.value,
+            userDescription: userDescription.value,
+            city: city.value,
+            willMove: yesCheckbox.checked,
+            email: email
 
+
+*/
+
+app.post('/updateUser', function(req, res){
+  let filter = {
+    email: req.body.email
+  }
+  let update = {
+    city: req.body.city,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    profileImg: req.body.profilePic,
+    description: req.body.userDescription,
+    website: req.body.website,
+    willMove: req.body.willMove
+  }
+  db.UserProfile.findOneAndUpdate(filter, update, {
+    returnOriginal: false
+  }, function(err, results) {
+    if(err) { res.send(err) }
+    res.send(results);
+  })
+});
+
+app.post('/addProfile', function(req, res){
+  let newUser = {
+    city: req.body.city,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    profileImg: req.body.profilePic,
+    description: req.body.userDescription,
+    website: req.body.website,
+    willMove: req.body.willMove,
+    email: req.body.email
+  }
+  const userThingy = new db.UserProfile(newUser);
+  userThingy.save(function (err) {
+    if (err) return res.send(false);
+    res.send(true);
+  });
+});
+
+app.post('/addInterview', function(req, res){
+  
+  let newInterview = {
+    recruiterEmail: req.body.recruiterEmail,
+    applicantEmail: req.body.applicantEmail,
+    interviewTime: req.body.interviewTime,
+    interviewLocation: req.body.interviewLocation,
+  }
+  const interviewThingy = new db.Interviews(newInterview);
+  interviewThingy.save(function (err) {
+    if (err) return res.send(false);
+    res.send(req.body);
+  });
+});
+
+app.post('/api/newUser', function(req, res) {
+  db.User
+  .findOne({ email: `${req.body.email}` })
+  .then(function(dbModel){
+    if(dbModel === null) {
+      let newUser = {
+        email: `${req.body.email}`,
+        password: `${req.body.email}`,
+        recruiter: false
+      }
+      const FreshUser = new db.User(newUser);
+      FreshUser.save(function (err) {
+        if(err){ return res.send(err); }
+        res.send(true);
+      });
+    } else {
+      res.send('Email already in use');
+    }
+  })
+
+
+});
 
 app.post('/api/login/', function (req, res) {
   db.User

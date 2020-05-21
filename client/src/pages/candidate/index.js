@@ -20,7 +20,9 @@ function Candidate(props) {
             })
         if (response.data === null) {
             setPage('CreateProfile');
+            return;
         }
+        
         // city: "Nowhere"
         // date: "2020-05-20T21:05:43.872Z"
         // description: "This is description one."
@@ -32,7 +34,6 @@ function Candidate(props) {
         // testResults: "Human Resources"
         // website: "https://www.google.com"
         // willMove: false
-        console.log(response.data);
         document.getElementById('usrDescription').innerHTML = `${response.data.description}`;
         document.getElementById('usrName').innerHTML = `${response.data.firstName} ${response.data.lastName}`;
         document.getElementById('testResults').innerHTML = `${response.data.testResults}`;
@@ -57,9 +58,13 @@ function Candidate(props) {
         window.location.href = window.location.href
     }
 
+    const edit = () => {
+        setPage('CreateProfile');
+    }
+
     return (
         <div className='container'>
-            <h5 onClick={logout} style={{float: 'right',cursor: 'pointer'}}>Logout</h5>
+
             <div style={{
                 backgroundImage: `url('${images[1]}')`,
                 padding: "25px",
@@ -68,6 +73,9 @@ function Candidate(props) {
                 textShadow:
                     "0.2em 0.2em 0.2em white,0.1em 0.1em 0.2em white,-0.2em 0.2em 0.2em white,-0.1em 0.1em 0.2em white,0.2em -0.2em 0.2em white,0.1em -0.1em 0.2em white,-0.2em -0.2em 0.2em white,-0.1em -0.1em 0.2em white"
             }}>
+            <h5 onClick={logout} style={{float: 'right',cursor: 'pointer',backgroundColor: 'grey'}}>Logout</h5>
+            <p> </p>
+            <h5 onClick={edit} style={{float: 'right',cursor: 'pointer',backgroundColor: 'grey'}}>Edit</h5>
                 <div className="row">
 
                     <div className="col-md-4">

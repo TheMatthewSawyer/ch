@@ -11,11 +11,11 @@ function Navbar(props) {
         setPage('CandidatePortal');
     }
 
-    function roleClickHandler() {
+    const roleClickHandler = () => {
         setPage('Roles');
     }
     
-    let home = "white", cand = "white", role = "white";
+    let home = "black", cand = "black", role = "black";
 
     return(
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
@@ -28,13 +28,13 @@ function Navbar(props) {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ml-auto">
                         <li>
-                            <button onClick={homeClickHandler} id='homeBtn' className="navButton nav-link" style={{color: `${home}`}}>Home<span className="sr-only">(current)</span></button>
+                            <button onClick={homeClickHandler} className="navbarLinkOp" style={{color: `${home}`}}>Home<span className="sr-only">(current)</span></button>
                         </li>
                         <li>
-                            <button onClick={candClickHandler} className="navButton nav-link" style={{color: `${cand}`}}>Candidate Portal</button>
+                            <button onClick={candClickHandler} className="navbarLinkOp" style={{color: `${cand}`}}>Candidate Portal</button>
                         </li>
                         <li>
-                            <button onClick={() => {roleClickHandler()}} className="navButton nav-link" style={{color: `${role}`}}>Role Descriptions</button>
+                            <button onClick={roleClickHandler} className="navbarLinkOp" style={{color: `${role}`}}>Role Descriptions</button>
                         </li>
                     </ul>
                 </div>

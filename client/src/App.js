@@ -17,7 +17,7 @@ function App() {
       return (
         <div className="App">
           <Navbar active={page} setPage={setPage}/>
-          <Home />
+          <Home setPage={setPage}/>
         </div>
       );
       case "CandidatePortal":

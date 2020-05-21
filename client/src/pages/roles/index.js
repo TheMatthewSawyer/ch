@@ -12,6 +12,10 @@ import technology from "../../images/tech support.jpg";
 
 function Roles() {
 
+    React.useEffect(()=>{
+        window.scrollTo(0, 0);
+    });
+
     return (
         <div >
             <br /><br />
