@@ -7,6 +7,8 @@ function Candidate(props) {
 
     React.useEffect(function () {
         getProfile();
+        getInterview();
+        window.scrollTo(0, 0);
     });
     const email = `${window.btoa('email')}`
     const usrEmail = window.atob(localStorage.getItem(`${email}`));
@@ -22,18 +24,7 @@ function Candidate(props) {
             setPage('CreateProfile');
             return;
         }
-        
-        // city: "Nowhere"
-        // date: "2020-05-20T21:05:43.872Z"
-        // description: "This is description one."
-        // email: "testapplicant1@test.com"
-        // firstName: "FirstOne"
-        // lastName: "LastOne"
-        // profileBackground: 1
-        // profileImg: "defaultImage"
-        // testResults: "Human Resources"
-        // website: "https://www.google.com"
-        // willMove: false
+
         document.getElementById('usrDescription').innerHTML = `${response.data.description}`;
         document.getElementById('usrName').innerHTML = `${response.data.firstName} ${response.data.lastName}`;
         document.getElementById('testResults').innerHTML = `${response.data.testResults}`;
@@ -53,6 +44,51 @@ function Candidate(props) {
         document.getElementById('usrWeb').href = `${response.data.website}`;
     }
 
+    function getInterview() {
+        axios
+        .post('/api/checkForApplicantInterview', {
+            email: usrEmail,
+        })
+        .then(function (result) {
+            if(result.data.length > 0) {
+                createTable(result.data);
+            } else {
+                document.getElementById('interviewOut').innerHTML = "~ None yet ~";
+            }
+
+        })
+    }
+
+    function createTable(intRtrn) {
+        console.log('here', intRtrn);
+        var table = `
+        <table style="margin-bottom: 0px" class="table table-striped table-dark text-center" id="appIntrvw">
+            <thead><tr>
+            <th scope="col">date</th>
+            <th scope="col">time</th>
+            <th scope="col">Location</th>
+            </tr></thead><tbody>`;
+        var interviewTime = new Date(`${intRtrn[0].interviewTime}`);
+        var options = { weekday: 'long', month: 'long', year: 'numeric', day: 'numeric' };
+        var dateOut = interviewTime.toLocaleDateString("en-US", options);
+        var hours = interviewTime.getHours();
+        var minutes = interviewTime.getMinutes();
+        var timestring = 'AM';
+        if (hours >= 12) {
+            timestring = 'PM';
+            if (hours !== 12) {
+                hours -= 12;
+            }
+        }
+        console.log(interviewTime);
+        table += `<tr><th scope="row">${dateOut}</th>`;
+        table += `<td>${hours}:${minutes} ${timestring}</td>`;
+        table += `<td>${intRtrn[0].interviewLocation}</td></tr>`;
+        table += `</tbody></table>`;
+
+        document.getElementById('interviewOut').innerHTML = table;
+    }
+
     const logout = () => {
         localStorage.clear();
         window.location.href = window.location.href
@@ -60,6 +96,10 @@ function Candidate(props) {
 
     const edit = () => {
         setPage('CreateProfile');
+    }
+    
+    const takeQuiz = () => {
+        setPage('QuizHome');
     }
 
     return (
@@ -73,9 +113,10 @@ function Candidate(props) {
                 textShadow:
                     "0.2em 0.2em 0.2em white,0.1em 0.1em 0.2em white,-0.2em 0.2em 0.2em white,-0.1em 0.1em 0.2em white,0.2em -0.2em 0.2em white,0.1em -0.1em 0.2em white,-0.2em -0.2em 0.2em white,-0.1em -0.1em 0.2em white"
             }}>
-            <h5 onClick={logout} style={{float: 'right',cursor: 'pointer',backgroundColor: 'grey'}}>Logout</h5>
-            <p> </p>
-            <h5 onClick={edit} style={{float: 'right',cursor: 'pointer',backgroundColor: 'grey'}}>Edit</h5>
+                <h5 onClick={logout} style={{ float: 'right', cursor: 'pointer', backgroundColor: 'grey' }}>Logout</h5>
+                <p> </p>
+                <h5 onClick={edit} style={{ float: 'right', cursor: 'pointer', backgroundColor: 'grey' }}>Edit</h5>
+                <button onClick={takeQuiz}>Take the Quiz!</button>
                 <div className="row">
 
                     <div className="col-md-4">
@@ -89,7 +130,7 @@ function Candidate(props) {
                             }}>
                         </img>
                     </div>
-
+                    <div className="col-md-2"></div>
                     <div className="col-md-6">
                         <h1 id="usrName"> - </h1>
                         <a id="usrWeb" href='www.google.com' target="_blank" rel="noopener noreferrer">Portfolio</a>
@@ -117,10 +158,23 @@ function Candidate(props) {
                         </p>
                     </div>
                 </div>
-
-
             </div>
-            <h1 id='test' style={{marginTop: '25px'}}>Logged in as: {usrEmail}</h1>
+
+            <div id="applicantInterview" className="">
+                <div className="row">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-10">
+                        <h3 style={{ marginBottom: "25px" }}> Interviews </h3>
+                        <div id="interviewOut" className="col-md-12">
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h6 id='test' style={{ marginTop: '25px' }}>Logged in as: {usrEmail}</h6>
         </div>
     );
 }

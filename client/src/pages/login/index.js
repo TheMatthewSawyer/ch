@@ -14,34 +14,33 @@ function Login(props) {
         e.preventDefault();
         const userEmail = document.getElementById('userEmail');
         const userPassword = document.getElementById('userPassword');
-        const signInError = document.getElementById('signInError');
         userEmail.style.border = "1px solid #ced4da";
         userPassword.style.border = "1px solid #ced4da";
         if(isEmpty(userEmail.value)) { userEmail.style.border = "2px solid red";return;}
         if(isEmpty(userPassword.value)) { userPassword.style.border = "2px solid red";return;}
+        if(userEmail.value === 'admin' && userPassword.value === 'admin') {
+            setPage('Admin');
+        }
+        
         axios
             .post('/api/login/',{
                 email: userEmail.value.toLowerCase(),
                 password: userPassword.value
             })
             .then(function (res) {
-                console.log(res);
                 if(res.data.email) {
                     if(res.data.recruiter === true) {
-                        console.log('recruiter good');
                         localStorage.setItem(`${window.btoa('email')}`, `${window.btoa( userEmail.value )}`);
                         localStorage.setItem(`${window.btoa('recruiter')}`, `${window.btoa( res.data.recruiter )}`);
                         setPage('Recruiter');
                     } else {
-                        console.log('candidate good');
                         let email = `${window.btoa('email')}`
                         localStorage.setItem(`${email}`, `${window.btoa( userEmail.value )}`);
                         localStorage.setItem(`${window.btoa('recruiter')}`, `${window.btoa( res.data.recruiter )}`);
                         setPage('Candidate');
                     }
                 } else {
-                    signInError.value = 'Incorrect email or password'
-                    console.log('bad');
+                    userEmail.value = 'Incorrect email or password'
                 }
             })
             .catch(err => console.log(err));
@@ -54,7 +53,6 @@ function Login(props) {
         newEmail.style.border = "1px solid #ced4da";
         newPassword1.style.border = "1px solid #ced4da";
         newPassword2.style.border = "1px solid #ced4da";
-        console.log(newEmail.value, newPassword1.value, newPassword2.value);
         if(newPassword1.value !== newPassword2.value) {
             newPassword1.style.border = "2px solid red";
             newPassword2.style.border = "2px solid red";
@@ -78,7 +76,7 @@ function Login(props) {
                 } else {
                     newEmail.value = 'Server error, please reload!';
                 }
-                console.log(res);
+                
             })
 
     }

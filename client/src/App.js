@@ -7,6 +7,9 @@ import Roles from './pages/roles';
 import Recruiter from './pages/recruiter';
 import Candidate from './pages/candidate';
 import CreateProfile from './pages/createProfile';
+import Quiz from './pages/quiz';
+import QuizHome from './pages/quizhome'
+import Admin from './pages/admin';
 
 function App() {
   //MATTHEW'S ROUTER :P
@@ -55,6 +58,27 @@ function App() {
                   <CreateProfile setPage={setPage}/>
                 </div>
               );
+              case "QuizHome":
+              return (
+                <div className="App">
+                  <Navbar active={page} setPage={setPage}/>
+                  <QuizHome setPage={setPage}/>
+                </div>
+              );
+              case "Quiz":
+              return (
+                <div className="App">
+                  <Navbar active={page} setPage={setPage}/>
+                  <Quiz setPage={setPage}/>
+                </div>
+              );
+              case "Admin":
+                return (
+                  <div className="App">
+                    <Navbar active={page} setPage={setPage}/>
+                    <Admin setPage={setPage}/>
+                  </div>
+                );
     default:
       return (
         <div className="App">

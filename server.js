@@ -19,10 +19,10 @@ app.use(bodyParser.json());
 
 mongoose.connect(
   "mongodb://heroku_bbwcnjd8:273qhmfvqq2jhakc5lc4s0b5me@ds229722.mlab.com:29722/heroku_bbwcnjd8",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
 );
 mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
 mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); });
@@ -38,60 +38,60 @@ ooo.     .oPYo.      .oPYo.                  o
 
 */
 
-app.get('/api/allUsers', function(req, res) {
+app.get('/api/allUsers', function (req, res) {
   db.User
-  .find(req.query)
-  .then(dbModel => res.json(dbModel))
-  .catch(err => res.status(422).json(err));
+    .find(req.query)
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 
-app.get('/api/allProfiles', function(req, res) {
+app.get('/api/allProfiles', function (req, res) {
   db.UserProfile
-  .find(req.query)
-  .then(dbModel => res.json(dbModel))
-  .catch(err => res.status(422).json(err));
+    .find(req.query)
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 
-app.get('/api/allRecruiters', function(req, res) {
+app.get('/api/allRecruiters', function (req, res) {
   db.User
     .find({ recruiter: true })
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 })
 
-app.get('/api/allApplicants', function(req, res) {
+app.get('/api/allApplicants', function (req, res) {
   db.User
     .find({ recruiter: false })
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 })
 
-app.get('/api/allInterviews', function(req, res) {
+app.get('/api/allInterviews', function (req, res) {
   db.Interviews
-  .find(req.query)
-  .then(dbModel => res.json(dbModel))
-  .catch(err => res.status(422).json(err));
+    .find(req.query)
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 
-app.post('/api/checkForApplicantInterview', function(req, res) {
+app.post('/api/checkForApplicantInterview', function (req, res) {
   db.Interviews
-  .find({ applicantEmail: `${req.body.email}` })
-  .then(dbModel => res.send(dbModel))
-  .catch(err => res.status(422).json(err));
+    .find({ applicantEmail: `${req.body.email}` })
+    .then(dbModel => res.send(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 
-app.post('/api/allInterviewsOfOne', function(req, res) {
+app.post('/api/allInterviewsOfOne', function (req, res) {
   db.Interviews
-  .find({ recruiterEmail: `${req.body.email}` })
-  .then(dbModel => res.send(dbModel))
-  .catch(err => res.status(422).json(err));
+    .find({ recruiterEmail: `${req.body.email}` })
+    .then(dbModel => res.send(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 
-app.post('/api/profile', function(req, res) {
+app.post('/api/profile', function (req, res) {
   db.UserProfile
-  .findOne({ email: `${req.body.email}`})
-  .then(dbModel => res.json(dbModel))
-  .catch(err => res.status(422).json(err));
+    .findOne({ email: `${req.body.email}` })
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
 });
 /*
             firstName: firstName.value,
@@ -106,7 +106,22 @@ app.post('/api/profile', function(req, res) {
 
 */
 
-app.post('/updateUser', function(req, res){
+app.post('/updateTestResults', function (req, res) {
+  let filter = {
+    email: req.body.email
+  }
+  let update = {
+    testResults: req.body.testResults
+  }
+  db.UserProfile.findOneAndUpdate(filter, update, {
+    returnOriginal: false
+  }, function (err, results) {
+    if (err) { res.send(err) }
+    res.send(results);
+  })
+});
+
+app.post('/updateUser', function (req, res) {
   let filter = {
     email: req.body.email
   }
@@ -121,13 +136,13 @@ app.post('/updateUser', function(req, res){
   }
   db.UserProfile.findOneAndUpdate(filter, update, {
     returnOriginal: false
-  }, function(err, results) {
-    if(err) { res.send(err) }
+  }, function (err, results) {
+    if (err) { res.send(err) }
     res.send(results);
   })
 });
 
-app.post('/addProfile', function(req, res){
+app.post('/addProfile', function (req, res) {
   let newUser = {
     city: req.body.city,
     firstName: req.body.firstName,
@@ -145,8 +160,8 @@ app.post('/addProfile', function(req, res){
   });
 });
 
-app.post('/addInterview', function(req, res){
-  
+app.post('/addInterview', function (req, res) {
+
   let newInterview = {
     recruiterEmail: req.body.recruiterEmail,
     applicantEmail: req.body.applicantEmail,
@@ -160,43 +175,68 @@ app.post('/addInterview', function(req, res){
   });
 });
 
-app.post('/api/newUser', function(req, res) {
+app.post('/api/newRecruiter', function (req, res) {
   db.User
-  .findOne({ email: `${req.body.email}` })
-  .then(function(dbModel){
-    if(dbModel === null) {
-      let newUser = {
-        email: `${req.body.email}`,
-        password: `${req.body.email}`,
-        recruiter: false
+    .findOne({ email: `${req.body.email}` })
+    .then(function (dbModel) {
+      if (dbModel === null) {
+        let newUser = {
+          email: `${req.body.email}`,
+          password: `${req.body.email}`,
+          recruiter: true
+        }
+        const FreshUser = new db.User(newUser);
+        FreshUser.save(function (err) {
+          if (err) { return res.send(err); }
+          res.send(true);
+        });
+      } else {
+        res.send('Email already in use');
       }
-      const FreshUser = new db.User(newUser);
-      FreshUser.save(function (err) {
-        if(err){ return res.send(err); }
-        res.send(true);
-      });
-    } else {
-      res.send('Email already in use');
-    }
-  })
+    })
+
+});
+
+app.post('/api/newUser', function (req, res) {
+  db.User
+    .findOne({ email: `${req.body.email}` })
+    .then(function (dbModel) {
+      if (dbModel === null) {
+        let newUser = {
+          email: `${req.body.email}`,
+          password: `${req.body.email}`,
+          recruiter: false
+        }
+        const FreshUser = new db.User(newUser);
+        FreshUser.save(function (err) {
+          if (err) { return res.send(err); }
+          res.send(true);
+        });
+      } else {
+        res.send('Email already in use');
+      }
+    })
 
 
 });
 
 app.post('/api/login/', function (req, res) {
   db.User
-  .findOne({ email: `${req.body.email}` })
-  .then(function(dbModel){
-      if(dbModel.password === req.body.password) {
-          let response = {
-              email: `${dbModel.email}`,
-              recruiter: dbModel.recruiter
-          }
-          res.json(response);
-      } else {
-          res.json(false);
+    .findOne({ email: `${req.body.email}` })
+    .then(function (dbModel) {
+      if (dbModel === null) {
+        return res.json(false);
       }
-  });
+      if (dbModel.password === req.body.password) {
+        let response = {
+          email: `${dbModel.email}`,
+          recruiter: dbModel.recruiter
+        }
+        res.json(response);
+      } else {
+        res.json(false);
+      }
+    });
 });
 
 if (process.env.NODE_ENV === "production") {
